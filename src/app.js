@@ -1,6 +1,6 @@
 const express = require('express')
-
 const app = express()
+app.locals.moment = require('moment')
 
 app.use('/static', express.static(__dirname + '/public'))
 

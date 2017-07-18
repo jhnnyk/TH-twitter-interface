@@ -53,7 +53,7 @@ html(lang='en')
           ul.app--tweet--list
             for tweet in tweets
               li
-                strong.app--tweet--timestamp 4h
+                strong.app--tweet--timestamp #{moment(tweet.created_at).fromNow()}
                 a.app--tweet--author
                   .app--avatar(style=`background-image: url(${tweet.user.profile_image_url})`)
                     img(src=`${tweet.user.profile_image_url}`)
