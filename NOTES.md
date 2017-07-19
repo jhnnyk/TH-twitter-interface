@@ -1,1 +1,1 @@
-[ ] dynamically update following count
+[x] dynamically update following count
