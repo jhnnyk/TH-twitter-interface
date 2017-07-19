@@ -1,7 +1,9 @@
 const express = require('express')
+const bodyParser = require('body-parser')
+
 const app = express()
 app.locals.moment = require('moment')
-
+app.use(bodyParser.urlencoded({extended: false}))
 app.use('/static', express.static(__dirname + '/public'))
 
 app.set('view engine', 'pug')

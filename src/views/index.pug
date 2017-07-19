@@ -23,15 +23,15 @@ html(lang='en')
                   a Sign Out
                   
     .app--tweet
-      form
+      form(action='/tweet', method='post')
         .circle--fluid
           .circle--fluid--cell.circle--fluid--primary.align-bottom.app--tweet--post
             .app--avatar(style=`background-image: url(${currentUser.profile_img})`)
               img(src=`${currentUser.profile_img}`)
-            textarea.circle--textarea--input#tweet-textarea(placeholder="What's happening?")
+            textarea.circle--textarea--input#tweet-textarea(name='tweetText', placeholder="What's happening?")
             strong.app--tweet--char#tweet-char 140
           .circle--fluid--cell.align-bottom
-            button.button-primary Tweet
+            button.button-primary(type='submit') Tweet
             
     .bounds.app--body
       .app--section--header

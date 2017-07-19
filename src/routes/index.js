@@ -5,7 +5,7 @@ const config = require(path.join(__dirname, '../config'))
 const Twit = require('twit')
 const T = new Twit(config)
 
-// variables to send to PUG template
+// variables to send to Pug template
 let tweets = []
 let following = []
 let DMs = []
@@ -17,7 +17,6 @@ T.get('account/verify_credentials', (err, data, response) => {
   currentUser.profile_img = data.profile_image_url
   currentUser.bg_img = data.profile_background_image_url
   currentUser.friends_count = data.friends_count
-  console.log(data)
 })
 
 // get timeline
@@ -42,6 +41,11 @@ router.get('/', (req, res) => {
     DMs: DMs,
     currentUser: currentUser
   } )
+})
+
+router.post('/tweet', (req, res) => {
+  T.post('statuses/update', { status: req.body.tweetText } )
+  res.redirect('/')
 })
 
 module.exports = router
