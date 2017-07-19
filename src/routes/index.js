@@ -15,7 +15,7 @@ let currentUser = {}
 T.get('account/verify_credentials', (err, data, response) => {
   currentUser.screen_name = data.screen_name
   currentUser.profile_img = data.profile_image_url
-  currentUser.bg_img = data.profile_background_image_url
+  currentUser.bg_img = data.profile_banner_url
   currentUser.friends_count = data.friends_count
 })
 
