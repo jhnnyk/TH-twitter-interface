@@ -6,7 +6,6 @@ html(lang='en')
     meta(name="viewport", content="width=device-width, initial-scale=1")
     link(href='https://fonts.googleapis.com/css?family=Work+Sans:400,600', rel='stylesheet', type='text/css')
     link(rel="stylesheet", href="static/css/global.css")
-
   body
     header.circle--header(style=`background: url(${currentUser.bg_img}) no-repeat`)
       .bounds
@@ -50,7 +49,7 @@ html(lang='en')
             
       .grid-33
         .app--section
-          ul.app--tweet--list
+          ul.app--tweet--list#tweet-container
             for tweet in tweets
               li
                 strong.app--tweet--timestamp #{moment(tweet.created_at).fromNow()}
@@ -106,3 +105,16 @@ html(lang='en')
                       img(src=`${DM.sender.profile_image_url}`)
                     p.app--message--text #{DM.text}
                     p.app--message--timestamp #{moment(DM.created_at).format('MMMM Do YYYY, h:mm a')}
+
+    script(src='https://code.jquery.com/jquery-2.1.1.js')
+    script(src='/static/js/socket.io.js')
+    script.
+      let socket = io()
+      socket.on('connection', () => {
+        console.log('Connected!')
+      })
+      
+      socket.on('tweets', (tweet) => {
+        let html = '<div class="row"><div class="col-md-6 col-md-offset-3 tweet"><a href="https://twitter.com/'+tweet.screen_name+'" target="_blank"><img src="' + tweet.user_profile_image + '" class="avatar pull-left"/></a><div class="names"><span class="full-name">' + tweet.name + ' </span><span class="username">@' +tweet.screen_name + '</span></div><div class="contents"><span class="text">' + tweet.text + '</span></div></div></div>';
+        $('#tweet-container').append(html)
+      })

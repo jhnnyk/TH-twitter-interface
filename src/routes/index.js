@@ -1,4 +1,10 @@
 const express = require('express')
+const http = require('http')
+const app = express()
+const server = app.listen(8810)
+const io = require('socket.io').listen(server)
+// server.listen(3000)
+
 const router = express.Router()
 const path = require('path')
 const config = require(path.join(__dirname, '../config'))
@@ -34,6 +40,16 @@ T.get('direct_messages', { count: 5 }, (err, data, response) => {
   DMs = data
 })
 
+// stream timeline updates
+//
+//  stream a sample of public statuses
+//
+// let stream = T.stream('user')
+
+// stream.on('tweet', function (tweet) {
+//   console.log(tweet)
+// })
+
 router.get('/', (req, res) => {
   res.render('index', {
     tweets: tweets, 
@@ -46,6 +62,21 @@ router.get('/', (req, res) => {
 router.post('/tweet', (req, res) => {
   T.post('statuses/update', { status: req.body.tweetText } )
   res.redirect('/')
+})
+
+// set up streaming feed
+
+let stream = T.stream('user')
+
+io.on('connect', (socket) => {
+  stream.on('tweet', (tweet) => {
+    let data = {}
+    data.name = tweet.user.name
+    data.screen_name = tweet.user.screen_name
+    data.text = tweet.text
+    data.profile_img = tweet.user.profile_image_url
+    socket.emit('tweets', data)
+  })
 })
 
 module.exports = router
